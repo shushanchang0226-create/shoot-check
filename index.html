@@ -14,6 +14,7 @@
   --bg:#0b1014; --bg2:#0f161b; --panel:#121b21; --panel2:#18232a; --edge:#22313a; --edge2:#2d3f49;
   --ink:#e8f0f3; --muted:#8aa0a9; --faint:#5d717a;
   --accent:#53c0e6; --accent-ink:#04202b;
+  --bright:#f2c35b; --overcast:#9fb3bc; --dim:#9a8cf0;
   --go:#34b27a; --maybe:#e8b740; --no:#e2604e; --night:#1f2b33; --sunline:#f2c35b;
   --display:"Archivo","IBM Plex Sans",system-ui,sans-serif;
   --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -162,6 +163,32 @@ details.card .body{padding:0 18px 18px}
 .tform input[type=number]{font:inherit;font-family:var(--mono);width:84px;padding:6px 8px;border-radius:8px;border:1px solid var(--edge2);background:var(--bg);color:var(--ink)}
 .actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .actions .primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+/* camera settings */
+.cam-top{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cam-when{margin:0}
+.cam-when b{font-family:var(--display);font-size:18px}
+.cam-when small{display:block;color:var(--muted);font-size:13px}
+.speed{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
+.speed .seg{flex-wrap:nowrap}
+.speed .seg button{white-space:nowrap}
+.lightb{display:inline-flex;gap:6px;align-items:center;padding:4px 10px;border-radius:999px;font-weight:600;font-size:13px;border:1px solid currentColor;margin-left:6px;vertical-align:2px}
+.l-bright{color:var(--bright)} .l-overcast{color:var(--overcast)} .l-dim{color:var(--dim)}
+.cam-tiles .val{font-size:22px}
+.cam-tiles .sub{font-size:12px;color:var(--muted);margin-top:4px}
+.cam-tiles .meter{position:relative}
+.cam-tiles .meter b{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink);opacity:.6}
+.warnbox{display:flex;gap:10px;align-items:flex-start;margin-top:12px;padding:10px 12px;border-radius:12px;border:1px solid #5a4a1c;background:#241f10;color:var(--maybe);font-size:14px}
+.warnbox.bad{border-color:#5a2a24;background:#26130f;color:var(--no)}
+.warnbox svg.i{font-size:18px;margin-top:2px}
+.explain{margin:14px 0 0;display:grid;gap:8px}
+.explain p{margin:0}
+.speeds{margin:12px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.speeds .chip{font-family:var(--mono);font-size:12px}
+.speeds .chip.cur{border-color:var(--accent)}
+.cam-strip{display:flex;gap:4px;margin-top:16px;padding-top:12px;border-top:1px solid var(--edge)}
+.cam-strip button{flex:1 0 34px;min-width:34px;border:0;border-radius:8px;padding:6px 0 4px;cursor:pointer;background:var(--panel2);display:flex;flex-direction:column;align-items:center;gap:2px;font-family:var(--mono);font-size:10px;color:var(--faint)}
+.cam-strip button svg.i{font-size:15px}
+.cam-strip button.sel{outline:2px solid var(--ink);outline-offset:1px}
 .site-foot{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;font-size:12px;color:var(--faint);padding:0 2px}
 .site-foot a{color:var(--accent)}
 </style>
@@ -188,6 +215,11 @@ details.card .body{padding:0 18px 18px}
     <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></symbol>
     <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6"/></symbol>
     <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M4 17a8 8 0 1 1 16 0"/><path d="M12 17l4-5"/><circle cx="12" cy="17" r="1"/></symbol>
+    <symbol id="i-shutter" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3l3.5 7M21 12l-7.5 1M16.5 20l-4.5-6M5 18.5l5-5.5M4 7l7 2"/></symbol>
+    <symbol id="i-iso" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9v6M10.5 15h1.5a1.5 1.5 0 0 0 0-3h-1a1.5 1.5 0 0 1 0-3h1.5M16.5 9a1.5 3 0 1 0 0 6a1.5 3 0 1 0 0-6z"/></symbol>
+    <symbol id="i-blur" viewBox="0 0 24 24"><path d="M3 12h4M2 8h5M2 16h5"/><circle cx="15" cy="12" r="6"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4.5M12 17.5v.5"/></symbol>
     <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
     <symbol id="i-tap" viewBox="0 0 24 24"><path d="M9 11V5a2 2 0 0 1 4 0v6"/><path d="M13 10a2 2 0 0 1 4 0v1a2 2 0 0 1 3 1.7V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-2.7L5 15a2 2 0 0 1 3.3-2.3L9 14"/></symbol>
   </defs>
@@ -260,6 +292,26 @@ details.card .body{padding:0 18px 18px}
     </div>
   </section>
 
+  <section class="card" id="camera" aria-live="polite">
+    <p class="label"><svg class="i"><use href="#i-shutter"/></svg>Camera settings<span class="right">Insta360 ONE RS 1-Inch 360 · 6K · 30 fps</span></p>
+    <div class="cam-top">
+      <p class="cam-when" id="cam-when"><b>Loading…</b></p>
+      <div class="speed"><svg class="i"><use href="#i-gauge"/></svg>Driving speed
+        <div class="seg" role="group" aria-label="Driving speed">
+          <button data-speed="10" aria-pressed="false">10 km/h</button>
+          <button data-speed="20" aria-pressed="false">20 km/h</button>
+          <button data-speed="30" aria-pressed="false">30 km/h</button>
+        </div>
+      </div>
+    </div>
+    <div class="tiles cam-tiles" id="cam-tiles"></div>
+    <div id="cam-warn"></div>
+    <div class="speeds" id="cam-speeds"></div>
+    <div class="explain" id="cam-explain"></div>
+    <div class="gridwrap"><div class="cam-strip" id="cam-strip" role="group" aria-label="Light rating for each hour today"></div></div>
+    <p class="foot">Light is rated from the forecast cloud cover and the sun height. <b class="l-dim">Dim</b>: sun below 15°, or cloud 90% or more with the sun below 30°. <b class="l-overcast">Overcast</b>: cloud at or above your overcast setting (<span id="cam-cloud"></span>%). <b class="l-bright">Bright</b>: everything else. Motion during each frame is driving speed × shutter time. The target is less than 2 cm, so fine detail stays sharp for 3D work. Tap an hour above, in the grid or in the timeline to see its settings.</p>
+  </section>
+
   <details class="card">
     <summary><span class="label"><svg class="i"><use href="#i-rules"/></svg>How the verdict works</span><svg class="i chev"><use href="#i-chev"/></svg></summary>
     <div class="body">
@@ -276,7 +328,7 @@ details.card .body{padding:0 18px 18px}
         </tbody>
       </table>
       </div>
-      <p class="foot">Wind is forecast at 10 m. At camera height (about 2 m) it is usually lower, so these limits are on the safe side. The default 12 km/h is Beaufort 2: leaves rustle, but small twigs are not in constant motion.</p>
+      <p class="foot">Wind and gusts are forecast at 10 m above the ground. At camera height (about 2 m) the wind is usually lower, so these limits are on the safe side. Below 20 km/h (up to a gentle breeze) leaves and small twigs move but branches stay still. From 20 to 30 km/h small branches move, so check the footage. Above 30 km/h small trees sway and gusts can shake the camera mount. Gust limits are set higher because gusts are always stronger than the mean wind.</p>
     </div>
   </details>
 
@@ -287,10 +339,10 @@ details.card .body{padding:0 18px 18px}
       <form id="tform" class="tform">
         <fieldset><legend><svg class="i"><use href="#i-wind"/></svg>Mean wind (km/h)</legend>
           <label for="t-wind">Go if below</label><input id="t-wind" type="number" min="0" max="100" step="1">
-          <label for="t-windNo">No go from</label><input id="t-windNo" type="number" min="0" max="150" step="1"></fieldset>
+          <label for="t-windNo">No go above</label><input id="t-windNo" type="number" min="0" max="150" step="1"></fieldset>
         <fieldset><legend><svg class="i"><use href="#i-gust"/></svg>Gusts (km/h)</legend>
           <label for="t-gust">Go if below</label><input id="t-gust" type="number" min="0" max="150" step="1">
-          <label for="t-gustNo">No go from</label><input id="t-gustNo" type="number" min="0" max="200" step="1"></fieldset>
+          <label for="t-gustNo">No go above</label><input id="t-gustNo" type="number" min="0" max="200" step="1"></fieldset>
         <fieldset><legend><svg class="i"><use href="#i-rain"/></svg>Rain chance (%)</legend>
           <label for="t-rainProb">Go if below</label><input id="t-rainProb" type="number" min="0" max="100" step="5">
           <label for="t-rainNo">No go from</label><input id="t-rainNo" type="number" min="0" max="100" step="5"></fieldset>
@@ -320,7 +372,7 @@ details.card .body{padding:0 18px 18px}
     uc:{name:"UC campus",lat:-43.5225,lon:172.5815,tz:"Pacific/Auckland"},
     tonga:{name:"Nukuʻalofa, Tonga",lat:-21.1394,lon:-175.2018,tz:"Pacific/Tongatapu"}
   };
-  var DEF={wind:12,gust:20,rainProb:20,cloud:70,sunHigh:30,windNo:20,gustNo:30,rainNo:50,dark:10,useLight:true,useWet:true};
+  var DEF={wind:20,gust:30,rainProb:20,cloud:70,sunHigh:30,windNo:30,gustNo:45,rainNo:50,dark:10,useLight:true,useWet:true};
   var T=Object.assign({},DEF);
   try{var st=JSON.parse(localStorage.getItem("shootcheck-thr")||"null"); if(st) Object.keys(DEF).forEach(function(k){ if(typeof st[k]===typeof DEF[k]) T[k]=st[k]; });}catch(e){}
   var HOURS_FROM=6, HOURS_TO=20;
@@ -353,8 +405,8 @@ details.card .body{padding:0 18px 18px}
     var reds=[], yellows=[];
     if(h.rain>0) reds.push({k:"rain",t:"Raining this hour"});
     if(h.prob>=T.rainNo) reds.push({k:"rain",t:"Rain chance "+h.prob+"%, rain likely"});
-    if(h.wind>=T.windNo) reds.push({k:"wind",t:"Wind "+h.wind.toFixed(0)+" km/h, too windy"});
-    if(h.gust>=T.gustNo) reds.push({k:"gust",t:"Gusts "+h.gust.toFixed(0)+" km/h, too strong"});
+    if(h.wind>T.windNo) reds.push({k:"wind",t:"Wind "+h.wind.toFixed(0)+" km/h, too windy"});
+    if(h.gust>T.gustNo) reds.push({k:"gust",t:"Gusts "+h.gust.toFixed(0)+" km/h, too strong"});
     if(reds.length) return {state:"no",reasons:reds};
     if(h.wind>=T.wind) yellows.push({k:"wind",t:"Wind "+h.wind.toFixed(0)+" km/h, leaves will move"});
     if(h.gust>=T.gust) yellows.push({k:"gust",t:"Gusts "+h.gust.toFixed(0)+" km/h"});
@@ -396,13 +448,13 @@ details.card .body{padding:0 18px 18px}
     el("arc").setAttribute("stroke-dashoffset",String(326.7*(1-Math.max(0,Math.min(1,frac)))));
   }
 
-  function tileStatus(v,lo,hi){return v>=hi?"bad":(v>=lo?"warn":"ok");}
+  function tileStatus(v,lo,hi,above){return (above?v>hi:v>=hi)?"bad":(v>=lo?"warn":"ok");}
   function renderTiles(h){
     var box=el("tiles"); box.textContent="";
     if(!h){var p=document.createElement("p");p.className="hint";p.textContent="No forecast for this hour.";box.appendChild(p);return;}
     var lightOk=(h.cloud>=T.cloud&&h.sun>=T.dark)||h.sun>=T.sunHigh;
-    [["wind","Wind",h.wind.toFixed(0),"km/h",tileStatus(h.wind,T.wind,T.windNo),Math.min(1,h.wind/(T.windNo*1.5))],
-     ["gust","Gusts",h.gust.toFixed(0),"km/h",tileStatus(h.gust,T.gust,T.gustNo),Math.min(1,h.gust/(T.gustNo*1.5))],
+    [["wind","Wind",h.wind.toFixed(0),"km/h",tileStatus(h.wind,T.wind,T.windNo,true),Math.min(1,h.wind/(T.windNo*1.5))],
+     ["gust","Gusts",h.gust.toFixed(0),"km/h",tileStatus(h.gust,T.gust,T.gustNo,true),Math.min(1,h.gust/(T.gustNo*1.5))],
      ["rain","Rain chance",String(h.prob),"%",h.rain>0?"bad":tileStatus(h.prob,T.rainProb,T.rainNo),h.prob/100],
      ["wet","Rain",h.rain.toFixed(1),"mm",h.rain>0?"bad":(h.rainBefore&&T.useWet?"warn":"ok"),Math.min(1,h.rain/2)],
      ["cloud","Cloud",String(h.cloud),"%",!T.useLight?"ok":(lightOk?"ok":"warn"),h.cloud/100],
@@ -520,17 +572,116 @@ details.card .body{padding:0 18px 18px}
     renderTiles(focus);
     el("now-time").textContent=focus?(focus.hour===nowHour?"now, ":"")+hh(focus.hour):"";
     renderTimeline(todays,nowHour,true);
+    var selH=selKey?hours.filter(function(h){return h.key===selKey;})[0]:null;
+    camHour=selH||focus||null; renderCamStrip(todays); renderCamera(camHour);
 
     el("stamp").textContent="Updated "+new Date().toLocaleString("en-NZ",{timeZone:loc.tz,hour:"2-digit",minute:"2-digit",month:"short",day:"numeric"})+" ("+loc.name+" local time)";
     if(selKey){var s=hours.filter(function(h){return h.key===selKey;})[0]; if(s) showDetail(s);}
   }
 
-  function select(h){
+  // ---- camera settings (Insta360 ONE RS 1-Inch 360, 6K 30 fps) ----
+  var SPEEDS=[10,20,30], speed=20, TARGET_CM=2;
+  try{var sp=Number(localStorage.getItem("shootcheck-speed")); if(SPEEDS.indexOf(sp)>=0) speed=sp;}catch(e){}
+  var CAM={
+    bright:{name:"Bright",icon:"sun",shutter:1000,iso:400},
+    overcast:{name:"Overcast",icon:"cloud",shutter:500,iso:800},
+    dim:{name:"Dim",icon:"moon",shutter:320,iso:1600,maxSpeed:20}
+  };
+  function lightRating(h){
+    if(h.sun<15||(h.cloud>=90&&h.sun<30)) return "dim";
+    if(h.cloud>=T.cloud) return "overcast";
+    return "bright";
+  }
+  // cm the camera travels while one frame is exposed
+  function motionCm(kmh,shutter){return kmh/3.6/shutter*100;}
+  function fmtCm(v){return v.toFixed(1)+" cm";}
+  function motionStatus(cm){return cm<TARGET_CM?"ok":(cm<=3?"warn":"bad");}
+  var camHour=null;
+
+  function camTile(iconName,title,val,unit,sub,status,frac,mark){
+    var t=document.createElement("div"); t.className="tile "+(status||"");
+    var top=document.createElement("div"); top.className="t-top"; top.appendChild(icon(iconName)); top.appendChild(document.createTextNode(title));
+    if(status){var dot=document.createElement("i"); dot.className="dot"; top.appendChild(dot);}
+    t.appendChild(top);
+    var v=document.createElement("div"); v.className="val"; v.textContent=val; if(unit){var u=document.createElement("small"); u.textContent=unit; v.appendChild(u);} t.appendChild(v);
+    if(sub){var sb=document.createElement("div"); sb.className="sub"; sb.textContent=sub; t.appendChild(sb);}
+    if(frac!=null){var m=document.createElement("div"); m.className="meter"; var mi=document.createElement("i"); mi.style.width=Math.round(Math.min(1,frac)*100)+"%"; m.appendChild(mi);
+      if(mark!=null){var mk=document.createElement("b"); mk.style.left=Math.round(mark*100)+"%"; m.appendChild(mk);} t.appendChild(m);}
+    return t;
+  }
+
+  function renderCamera(h){
+    camHour=h||camHour;
+    document.querySelectorAll("#camera [data-speed]").forEach(function(b){b.setAttribute("aria-pressed",String(Number(b.dataset.speed)===speed));});
+    el("cam-cloud").textContent=String(T.cloud);
+    var when=el("cam-when"), tiles=el("cam-tiles"), warn=el("cam-warn"), sp=el("cam-speeds"), ex=el("cam-explain");
+    when.textContent=""; tiles.textContent=""; warn.textContent=""; sp.textContent=""; ex.textContent="";
+    h=camHour;
+    if(!h){var b0=document.createElement("b"); b0.textContent="No forecast for this hour"; when.appendChild(b0); return;}
+    var r=lightRating(h), c=CAM[r], cm=motionCm(speed,c.shutter), st=motionStatus(cm);
+    var b=document.createElement("b"); b.textContent=dayLabel(h.date)+", "+hh(h.hour); when.appendChild(b);
+    var lb=document.createElement("span"); lb.className="lightb l-"+r; lb.appendChild(icon(c.icon)); lb.appendChild(document.createTextNode(c.name)); when.appendChild(lb);
+    var sm=document.createElement("small"); sm.textContent="Cloud "+h.cloud+"%, sun "+h.sun.toFixed(0)+"° above the horizon"+(h.state==="dark"?" · the verdict marks this hour too dark":""); when.appendChild(sm);
+
+    tiles.appendChild(camTile("shutter","Shutter","1/"+c.shutter," s","Shutter priority",null,null));
+    tiles.appendChild(camTile("iso","ISO","Auto","","up to ISO "+c.iso,null,null));
+    tiles.appendChild(camTile("blur","Motion per frame",cm.toFixed(1)," cm","at "+speed+" km/h · target under "+TARGET_CM+" cm",st,cm/4,TARGET_CM/4));
+
+    var maxOk=Math.floor(TARGET_CM/100*c.shutter*3.6); // fastest speed in km/h that stays under target
+    if(c.maxSpeed){
+      var w=document.createElement("div"); w.className="warnbox"+(speed>c.maxSpeed?" bad":""); w.appendChild(icon("warn"));
+      var wt=document.createElement("span");
+      wt.textContent="Low light: drive at "+c.maxSpeed+" km/h or slower. "+
+        (speed>c.maxSpeed?"At "+speed+" km/h each frame smears "+fmtCm(cm)+", which will blur fine detail.":
+         cm>=TARGET_CM?"At "+speed+" km/h each frame moves "+fmtCm(cm)+", just over the "+TARGET_CM+" cm target. Go "+maxOk+" km/h or slower to stay under it.":
+         "At "+speed+" km/h each frame moves "+fmtCm(cm)+", under the "+TARGET_CM+" cm target.");
+      w.appendChild(wt); warn.appendChild(w);
+    } else if(st!=="ok"){
+      var w2=document.createElement("div"); w2.className="warnbox"+(st==="bad"?" bad":""); w2.appendChild(icon("warn"));
+      var w2t=document.createElement("span"); w2t.textContent="At "+speed+" km/h each frame moves "+fmtCm(cm)+", over the "+TARGET_CM+" cm target. Drive at "+maxOk+" km/h or slower."; w2.appendChild(w2t); warn.appendChild(w2);
+    }
+
+    SPEEDS.forEach(function(v){var m=motionCm(v,c.shutter); var ch=chip("gauge",v+" km/h → "+fmtCm(m),(m<TARGET_CM?"good":"bad")+(v===speed?" cur":"")); sp.appendChild(ch);});
+
+    var why={
+      bright:"There is plenty of light, so the camera can use a very fast shutter: each frame is captured in 1/1000 of a second.",
+      overcast:"Cloud cuts the light, so the shutter is slowed to 1/500 of a second to let more light reach the sensor.",
+      dim:"The light is low, so the shutter is slowed to 1/320 of a second. That lets in more light, but the camera moves further while each frame is captured, so you need to drive slower."
+    }[r];
+    var isoTxt={
+      bright:"Set ISO to Auto with a limit of 400. The camera brightens the picture only a little, so the footage stays clean with almost no grain.",
+      overcast:"Set ISO to Auto with a limit of 800. The camera can brighten the picture more. There will be a little grain, which is still fine for 3D work.",
+      dim:"Set ISO to Auto with a limit of 1600. The footage will be grainier. If it still looks too dark, wait for better light rather than using a slower shutter."
+    }[r];
+    var mv="At "+speed+" km/h the car moves "+fmtCm(cm)+" while each frame is captured. "+
+      (cm<TARGET_CM?"That is under the 2 cm target, so edges and fine detail stay sharp.":"That is over the 2 cm target, so fine detail will smear. Slow down to "+maxOk+" km/h or less.");
+    [why,mv,isoTxt,"On the camera: choose 6K at 30 fps, set the exposure mode to Shutter priority, pick the shutter speed, then set the ISO upper limit. Set it before you start driving and leave it fixed for the whole run."].forEach(function(t){var p=document.createElement("p"); p.textContent=t; ex.appendChild(p);});
+  }
+
+  function renderCamStrip(todays){
+    var box=el("cam-strip"); box.textContent="";
+    todays.forEach(function(h){
+      var r=lightRating(h), b=document.createElement("button"); b.type="button";
+      b.className="l-"+r+(camHour&&camHour.key===h.key?" sel":""); b.dataset.key=h.key;
+      b.title=hh(h.hour)+" "+CAM[r].name+" light, 1/"+CAM[r].shutter+" s";
+      b.setAttribute("aria-label",hh(h.hour)+" "+CAM[r].name+" light");
+      b.appendChild(icon(CAM[r].icon)); var t=document.createElement("span"); t.textContent=String(h.hour).padStart(2,"0"); b.appendChild(t);
+      b.addEventListener("click",function(){select(h,true);});
+      box.appendChild(b);
+    });
+  }
+  function markStrip(key){document.querySelectorAll("#cam-strip button").forEach(function(b){b.classList.toggle("sel",b.dataset.key===key);});}
+  document.querySelectorAll("#camera [data-speed]").forEach(function(b){b.addEventListener("click",function(){
+    speed=Number(b.dataset.speed); try{localStorage.setItem("shootcheck-speed",String(speed));}catch(e){}
+    renderCamera();
+  });});
+
+  function select(h,fromStrip){
     selKey=h.key;
     document.querySelectorAll(".cell.sel").forEach(function(c){c.classList.remove("sel");});
     var c=document.querySelector('.cell[data-key="'+h.key+'"]'); if(c) c.classList.add("sel");
-    showDetail(h);
-    if(window.matchMedia("(max-width:900px)").matches){el("detail").scrollIntoView({behavior:"smooth",block:"nearest"});}
+    showDetail(h); renderCamera(h); markStrip(h.key);
+    if(!fromStrip&&window.matchMedia("(max-width:900px)").matches){el("detail").scrollIntoView({behavior:"smooth",block:"nearest"});}
   }
 
   function showDetail(h){
@@ -577,8 +728,8 @@ details.card .body{padding:0 18px 18px}
 
   function fillRules(){
     var s=function(id,v){el(id).textContent=v;};
-    s("r-w1","Below "+T.wind+" km/h"); s("r-w2",T.wind+" to "+(T.windNo-1)+" km/h"); s("r-w3",T.windNo+" km/h or more");
-    s("r-g1","Below "+T.gust+" km/h"); s("r-g2",T.gust+" to "+(T.gustNo-1)+" km/h"); s("r-g3",T.gustNo+" km/h or more");
+    s("r-w1","Below "+T.wind+" km/h"); s("r-w2",T.wind+" to "+T.windNo+" km/h"); s("r-w3","Above "+T.windNo+" km/h");
+    s("r-g1","Below "+T.gust+" km/h"); s("r-g2",T.gust+" to "+T.gustNo+" km/h"); s("r-g3","Above "+T.gustNo+" km/h");
     s("r-p1","Below "+T.rainProb+"%"); s("r-p2",T.rainProb+"% to "+(T.rainNo-1)+"%"); s("r-p3",T.rainNo+"% or more");
     if(T.useLight){ s("r-l1","Overcast (cloud "+T.cloud+"% or more), or high sun ("+T.sunHigh+"° or more)"); s("r-l2","Clear sky with sun between "+T.dark+"° and "+T.sunHigh+"°"); }
     else { s("r-l1","Not checked"); s("r-l2","Not checked"); }
@@ -603,7 +754,7 @@ details.card .body{padding:0 18px 18px}
   ["avonhead","uc","tonga"].forEach(function(x){el("loc-"+x).addEventListener("click",function(){setLoc(x);});});
   el("refresh").addEventListener("click",load);
   fillForm(); fillRules();
-  window.__shoot={sunElevation:sunElevation,classify:classify,build:build};
+  window.__shoot={sunElevation:sunElevation,classify:classify,build:build,lightRating:lightRating,motionCm:motionCm};
   setLoc(current);
 })();
 </script>
