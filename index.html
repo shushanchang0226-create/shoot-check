@@ -585,7 +585,7 @@ details.card .body{padding:0 18px 18px}
   var CAM={
     bright:{name:"Bright",icon:"sun",shutter:1000,iso:400},
     overcast:{name:"Overcast",icon:"cloud",shutter:500,iso:800},
-    dim:{name:"Dim",icon:"moon",shutter:250,iso:1600,maxSpeed:20}
+    dim:{name:"Dim",icon:"moon",shutter:320,iso:1600,maxSpeed:20}
   };
   function lightRating(h){
     if(h.sun<15||(h.cloud>=90&&h.sun<30)) return "dim";
@@ -633,7 +633,7 @@ details.card .body{padding:0 18px 18px}
       var wt=document.createElement("span");
       wt.textContent="Low light: drive at "+c.maxSpeed+" km/h or slower. "+
         (speed>c.maxSpeed?"At "+speed+" km/h each frame smears "+fmtCm(cm)+", which will blur fine detail.":
-         speed===c.maxSpeed?"At "+speed+" km/h each frame moves "+fmtCm(cm)+", just over the "+TARGET_CM+" cm target. Go "+maxOk+" km/h or slower to stay under it.":
+         cm>=TARGET_CM?"At "+speed+" km/h each frame moves "+fmtCm(cm)+", just over the "+TARGET_CM+" cm target. Go "+maxOk+" km/h or slower to stay under it.":
          "At "+speed+" km/h each frame moves "+fmtCm(cm)+", under the "+TARGET_CM+" cm target.");
       w.appendChild(wt); warn.appendChild(w);
     } else if(st!=="ok"){
@@ -646,7 +646,7 @@ details.card .body{padding:0 18px 18px}
     var why={
       bright:"There is plenty of light, so the camera can use a very fast shutter: each frame is captured in 1/1000 of a second.",
       overcast:"Cloud cuts the light, so the shutter is slowed to 1/500 of a second to let more light reach the sensor.",
-      dim:"The light is low, so the shutter is slowed to 1/250 of a second. That lets in more light, but the camera moves further while each frame is captured, so you need to drive slower."
+      dim:"The light is low, so the shutter is slowed to 1/320 of a second. That lets in more light, but the camera moves further while each frame is captured, so you need to drive slower."
     }[r];
     var isoTxt={
       bright:"Set ISO to Auto with a limit of 400. The camera brightens the picture only a little, so the footage stays clean with almost no grain.",
