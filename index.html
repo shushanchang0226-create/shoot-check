@@ -39,6 +39,8 @@ button:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid
 .brand h1{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:.01em;margin:0;line-height:1.1}
 .brand p{margin:2px 0 0;color:var(--muted);font-size:13px}
 .controls{display:flex;flex-wrap:wrap;gap:8px}
+.src{flex-basis:100%;margin:0;font-family:var(--mono);font-size:11px;color:var(--faint);text-align:right}
+@media (max-width:640px){.src{text-align:left}}
 .seg{display:flex;flex-wrap:wrap;padding:4px;gap:4px;border-radius:12px;background:var(--panel);border:1px solid var(--edge)}
 .seg button{border:0;background:transparent;padding:7px 12px;border-radius:9px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;font-size:14px;color:var(--muted)}
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
@@ -233,11 +235,11 @@ details.card .body{padding:0 18px 18px}
     </div>
     <div class="controls">
       <div class="seg" role="group" aria-label="Location">
-        <button id="loc-avonhead" aria-pressed="true"><svg class="i"><use href="#i-pin"/></svg>Avonhead</button>
-        <button id="loc-uc" aria-pressed="false"><svg class="i"><use href="#i-pin"/></svg>UC campus</button>
+        <button id="loc-avonhead" aria-pressed="true"><svg class="i"><use href="#i-pin"/></svg>Christchurch (Avonhead)</button>
         <button id="loc-tonga" aria-pressed="false"><svg class="i"><use href="#i-pin"/></svg>Nukuʻalofa, Tonga</button>
       </div>
       <button class="btn" id="refresh"><svg class="i"><use href="#i-refresh"/></svg>Refresh</button>
+      <p class="src" id="src">Forecast: Open-Meteo</p>
     </div>
   </header>
 
@@ -368,8 +370,7 @@ details.card .body{padding:0 18px 18px}
 (function(){
   "use strict";
   var LOCS={
-    avonhead:{name:"Avonhead",lat:-43.517,lon:172.560,tz:"Pacific/Auckland"},
-    uc:{name:"UC campus",lat:-43.5225,lon:172.5815,tz:"Pacific/Auckland"},
+    avonhead:{name:"Christchurch (Avonhead)",lat:-43.517,lon:172.560,tz:"Pacific/Auckland"},
     tonga:{name:"Nukuʻalofa, Tonga",lat:-21.1394,lon:-175.2018,tz:"Pacific/Tongatapu"}
   };
   var DEF={wind:20,gust:30,rainProb:20,cloud:70,sunHigh:30,windNo:30,gustNo:45,rainNo:50,dark:10,useLight:true,useWet:true};
@@ -705,14 +706,17 @@ details.card .body{padding:0 18px 18px}
 
   function load(){
     var loc=LOCS[current];
-    setRing("dark","cloud","Loading","",0); el("vtitle").textContent="Loading the forecast…"; el("vsub").textContent="Please wait"; el("vchips").textContent="";
+    setRing("dark","cloud","Loading","",0); el("vtitle").textContent="Loading the forecast…"; el("vsub").textContent="Please wait"; el("vchips").textContent=""; el("src").textContent="Forecast: Open-Meteo, loading…";
     var url="https://api.open-meteo.com/v1/forecast?latitude="+loc.lat+"&longitude="+loc.lon+
       "&hourly=wind_speed_10m,wind_gusts_10m,precipitation_probability,precipitation,cloud_cover"+
       "&timezone="+encodeURIComponent(loc.tz)+"&forecast_days=7&wind_speed_unit=kmh";
     fetch(url).then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
-      .then(function(j){ data=j; render(); })
+      .then(function(j){ data=j;
+        // the API snaps the request to its nearest model grid point and returns that point's coordinates
+        el("src").textContent="Forecast: Open-Meteo, best_match model, grid point ("+(typeof j.latitude==="number"?j.latitude.toFixed(3)+", "+j.longitude.toFixed(3):"unknown")+")";
+        render(); })
       .catch(function(e){
-        setRing("no","stop","Error","",1);
+        setRing("no","stop","Error","",1); el("src").textContent="Forecast: Open-Meteo, not loaded";
         el("vtitle").textContent="Could not load the forecast";
         el("vsub").textContent="Check your connection and press Refresh. ("+e.message+")";
       });
@@ -720,7 +724,7 @@ details.card .body{padding:0 18px 18px}
 
   function setLoc(k){
     current=k; selKey=null;
-    ["avonhead","uc","tonga"].forEach(function(x){el("loc-"+x).setAttribute("aria-pressed",String(x===k));});
+    ["avonhead","tonga"].forEach(function(x){el("loc-"+x).setAttribute("aria-pressed",String(x===k));});
     try{localStorage.setItem("shootcheck-loc",k);}catch(e){}
     var box=el("detail-body"); box.textContent=""; var p=document.createElement("p"); p.className="empty"; p.appendChild(icon("tap")); p.appendChild(document.createTextNode("Tap any hour in the grid or timeline to see its weather and the reasons.")); box.appendChild(p);
     load();
@@ -751,7 +755,7 @@ details.card .body{padding:0 18px 18px}
     T=Object.assign({},DEF); try{localStorage.removeItem("shootcheck-thr");}catch(e){}
     fillForm(); fillRules(); if(data) render(); el("t-msg").textContent="Reset to 3D capture defaults.";
   });
-  ["avonhead","uc","tonga"].forEach(function(x){el("loc-"+x).addEventListener("click",function(){setLoc(x);});});
+  ["avonhead","tonga"].forEach(function(x){el("loc-"+x).addEventListener("click",function(){setLoc(x);});});
   el("refresh").addEventListener("click",load);
   fillForm(); fillRules();
   window.__shoot={sunElevation:sunElevation,classify:classify,build:build,lightRating:lightRating,motionCm:motionCm};
