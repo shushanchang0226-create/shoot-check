@@ -235,8 +235,7 @@ details.card .body{padding:0 18px 18px}
     </div>
     <div class="controls">
       <div class="seg" role="group" aria-label="Location">
-        <button id="loc-avonhead" aria-pressed="true"><svg class="i"><use href="#i-pin"/></svg>Avonhead</button>
-        <button id="loc-uc" aria-pressed="false"><svg class="i"><use href="#i-pin"/></svg>UC campus</button>
+        <button id="loc-avonhead" aria-pressed="true"><svg class="i"><use href="#i-pin"/></svg>Christchurch (Avonhead)</button>
         <button id="loc-tonga" aria-pressed="false"><svg class="i"><use href="#i-pin"/></svg>Nukuʻalofa, Tonga</button>
       </div>
       <button class="btn" id="refresh"><svg class="i"><use href="#i-refresh"/></svg>Refresh</button>
@@ -371,8 +370,7 @@ details.card .body{padding:0 18px 18px}
 (function(){
   "use strict";
   var LOCS={
-    avonhead:{name:"Avonhead",lat:-43.517,lon:172.560,tz:"Pacific/Auckland"},
-    uc:{name:"UC campus",lat:-43.5225,lon:172.5815,tz:"Pacific/Auckland"},
+    avonhead:{name:"Christchurch (Avonhead)",lat:-43.517,lon:172.560,tz:"Pacific/Auckland"},
     tonga:{name:"Nukuʻalofa, Tonga",lat:-21.1394,lon:-175.2018,tz:"Pacific/Tongatapu"}
   };
   var DEF={wind:20,gust:30,rainProb:20,cloud:70,sunHigh:30,windNo:30,gustNo:45,rainNo:50,dark:10,useLight:true,useWet:true};
@@ -726,7 +724,7 @@ details.card .body{padding:0 18px 18px}
 
   function setLoc(k){
     current=k; selKey=null;
-    ["avonhead","uc","tonga"].forEach(function(x){el("loc-"+x).setAttribute("aria-pressed",String(x===k));});
+    ["avonhead","tonga"].forEach(function(x){el("loc-"+x).setAttribute("aria-pressed",String(x===k));});
     try{localStorage.setItem("shootcheck-loc",k);}catch(e){}
     var box=el("detail-body"); box.textContent=""; var p=document.createElement("p"); p.className="empty"; p.appendChild(icon("tap")); p.appendChild(document.createTextNode("Tap any hour in the grid or timeline to see its weather and the reasons.")); box.appendChild(p);
     load();
@@ -757,7 +755,7 @@ details.card .body{padding:0 18px 18px}
     T=Object.assign({},DEF); try{localStorage.removeItem("shootcheck-thr");}catch(e){}
     fillForm(); fillRules(); if(data) render(); el("t-msg").textContent="Reset to 3D capture defaults.";
   });
-  ["avonhead","uc","tonga"].forEach(function(x){el("loc-"+x).addEventListener("click",function(){setLoc(x);});});
+  ["avonhead","tonga"].forEach(function(x){el("loc-"+x).addEventListener("click",function(){setLoc(x);});});
   el("refresh").addEventListener("click",load);
   fillForm(); fillRules();
   window.__shoot={sunElevation:sunElevation,classify:classify,build:build,lightRating:lightRating,motionCm:motionCm};
